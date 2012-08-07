@@ -34,6 +34,8 @@ This should leave the files `header_costs` and `include_costs` full of useful in
 
 ![Example graph](https://raw.github.com/lukedodd/include-wrangler/master/example/example_out/include_graph.png)
 
+You can see `example/example_out` for the full include-wrangler output on the example project if you can't be bothered or are unable to build/run the code yourself.
+
 ## Interpreting results
 
 A blog post will be put on lukedodd.com soon explaining the output of this application, but for now hopefully the following information will be useful.
@@ -47,3 +49,6 @@ The output line `Cost: 6, from: ("e.h","f.h")` means that `"#include "f.h"` in `
 The `header_costs` output file contains the cost of each header file in your project. The *cost* of a header is the number of files we could avoid opening during compilation if that header file was removed from the project.
 
 The output line `Cost: 14, from: "e.h"` means that header `e.h` _cost_ 14.
+
+## License
+This code is under the BSD license.
