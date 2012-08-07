@@ -30,7 +30,7 @@ Run `sh run_example.sh` to process the small example project with incude-wrangle
     # go back to original directory
     cd ..
     
-This should leave the files `header_costs` and `include_costs` full of useful information and give you the following pretty picture of your projects structure:
+This should leave the files `header_costs` and `include_costs` full of useful information and give you the following pretty picture of the example projects structure:
 
 ![Example graph](https://raw.github.com/lukedodd/include-wrangler/master/example/example_out/include_graph.png)
 
