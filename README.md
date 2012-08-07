@@ -2,7 +2,7 @@
 
 A tool for analysing the cost, in terms of compile time, of include directives and entire include files in C/C++ projects.
 
-Include-wrangler will can also output your programs include structure in graphvis format for visualisation or further analysis.
+Include-wrangler will also output your programs include structure in graphvis format for visualisation or further analysis.
 
 ## Build
 
