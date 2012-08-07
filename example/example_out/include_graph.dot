@@ -1,0 +1,16 @@
+digraph includes { 
+
+"src/d.cpp"->"i.h";
+"src/d.cpp"->"e.h";
+"src/c.cpp"->"f.h";
+"src/c.cpp"->"e.h";
+"src/b.cpp"->"g.h";
+"src/a.cpp"->"i.h";
+"src/a.cpp"->"e.h";
+"h.h"->"j.h";
+"g.h"->"i.h";
+"g.h"->"e.h";
+"f.h"->"j.h";
+"e.h"->"g.h";
+"e.h"->"f.h";
+}
