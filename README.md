@@ -4,6 +4,8 @@ A tool for analysing the cost, in terms of compile time, of include directives a
 
 Include-wrangler will also output your programs include structure in graphvis format for visualisation or further analysis.
 
+Include-Wrangler should be useful for identifying headers or include statements which could be cleaned up - hopefully resulting in faster build times!
+
 ## Build
 
 The only requirement to build include-wrangler is the Haskell compiler GHC. Include-wrangler will compile and run under Windows or Linux and probably anywhere else which runs GHC reasonably well (e.g. OSX).
@@ -45,10 +47,14 @@ The `include_costs` output file contains the cost of each include directive cont
 
 The output line `Cost: 6, from: ("e.h","f.h")` means that `"#include "f.h"` in `e.h` _cost_ 6.
 
+Removing expensive includes - typically by using [forward declarations](http://www-subatech.in2p3.fr/~photons/subatech/soft/carnac/CPP-INC-1.shtml) could improve compile tme drastically.
+
 ### Header file cost
 The `header_costs` output file contains the cost of each header file in your project. The *cost* of a header is the number of files we could avoid opening during compilation if that header file was removed from the project.
 
 The output line `Cost: 14, from: "e.h"` means that header `e.h` _cost_ 14.
+
+Expensive headers are potetential candidates for [precompiled headers](http://en.wikipedia.org/wiki/Precompiled_header) or general targets for refactoring.
 
 ## License
 This code is under the BSD license.
