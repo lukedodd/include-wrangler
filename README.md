@@ -40,7 +40,7 @@ You can see `example/example_out` for the full include-wrangler output on the ex
 
 ## Interpreting results
 
-A blog post will be put on lukedodd.com soon explaining the output of this application, but for now hopefully the following information will be useful.
+A full explanation of include-wranglers analysis and output can be found [here](http://www.lukedodd.com/?p=253). The following explanation will hopefully satisfy most users.
 
 ### Include costs
 The `include_costs` output file contains the cost of each include directive contained in **header** files of your project sorted from highest to lowest. The *cost* of an include directive is the number of files that we can avoid opening during compilation if that include directive is omitted.
