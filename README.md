@@ -4,7 +4,7 @@ A tool for analysing the cost, in terms of compile time, of include directives a
 
 Include-wrangler will also output your programs include structure in graphvis format for visualisation or further analysis.
 
-Include-Wrangler should be useful for identifying headers or include statements which could be cleaned up - hopefully resulting in faster build times!
+Include-wrangler should be useful for identifying headers or include statements which could be cleaned up - hopefully resulting in faster build times!
 
 ## Build
 
