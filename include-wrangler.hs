@@ -42,6 +42,8 @@ icost graph s (u,v) = sum $ map (icost' graph (u,v)) $ s
 hcost' graph f w = (Set.size $ dfs graph w) - (Set.size $ dfs (removeNode graph f) w)
 -- The "cost" of an include file w.r.t. to a list of files s - (probably list of .cpp files)
 hcost graph s f  = sum $ map (hcost' graph f) $ s
+-- The "cost" of a source file.
+ccost graph f = Set.size $ dfs graph f
 
 endsWith a b = a == drop (length b - length a) b
 
@@ -119,10 +121,11 @@ createIncludeGraph includeDirs sourceFiles = do
 	let edges = Map.union sMap iMap
 	return $ IGraph edges
 
-showIProgress (percent, edge, cost) = do 
-	printf "Progress: %.1f%%, edge: %s, cost: %s\n" (percent::Float) (show edge) (show cost)
-showHProgress (percent, header, cost) = do 
-	printf "Progress: %.1f%%, header: %s, cost: %s\n" (percent::Float) (show header) (show cost)
+progressPercent n = map fromRational $ [100*i/n | i <- [1..n]] 
+zip3Percent a b = zip3 (progressPercent $ fromIntegral $ length a) a b
+showProgress nameOfThing (percent, thing, cost) = do 
+	printf "Progress: %.1f%%, %s: %s, cost: %s\n" 
+		(percent::Float) nameOfThing (show thing) (show cost)
 
 showCost (cost,item) = "Cost: " ++ (show cost) ++ ", from: " ++ (show item) ++ "\n"
 showCosts l = foldr (++) [] $ map showCost l
@@ -140,23 +143,29 @@ main = do
 	graph <- createIncludeGraph includeDirs sourceFiles
 	-- "Compress" the graph for faster cost analysis.
 	let (cgraph, (cvmap, icvmap)) = compress graph
-	let ep = edgePairs cgraph
-	let ephuman = map (pairMap icvmap) ep
+	let cep = edgePairs cgraph
+	let ephuman = map (pairMap icvmap) cep
+	let csource = map cvmap sourceFiles
 	-- Calculate include the costs.
 	putStrLn "Calculating include costs..."
-	let icosts = map (icost cgraph (map cvmap sourceFiles)) ep
-	let m = fromIntegral $ length ep
-	mapM showIProgress $ zip3 [100*i/m | i <- [1..m]] ephuman icosts
+	let icosts = map (icost cgraph csource) cep
+	mapM (showProgress "include")  $ zip3Percent ephuman icosts
 	putStrLn "Writing include costs to file \"include_costs\"..."
 	writeFile "include_costs" $ showCosts $ reverse $ sort $ zip icosts ephuman
 	-- Calculate header file costs.
 	putStrLn "Calculating header costs..."
 	let headers = filter isInclude $ vList graph
-	let hcosts = map (hcost graph sourceFiles) $ headers
-	let m = fromIntegral $ length headers
-	mapM showHProgress $ zip3 [100*i/m | i <- [1..m]] headers hcosts
+	let cheaders = map cvmap headers
+	let hcosts = map (hcost cgraph csource) $ cheaders
+	mapM (showProgress "header") $ zip3Percent headers hcosts
 	putStrLn "Writing header file costs to file \"header_costs\"..."
 	writeFile "header_costs" $ showCosts $ reverse $ sort $ zip hcosts headers
+	-- Calculate CPP file costs.
+	putStrLn "Translation unit costs..."
+	let ccosts = map (ccost cgraph) csource 
+	mapM (showProgress "source") $ zip3Percent sourceFiles ccosts
+	putStrLn "Writing source file costs to file \"translation_unit_costs\"..."
+	writeFile "translation_unit_costs" $ showCosts $ reverse $ sort $ zip ccosts sourceFiles
 	-- Graphvis output
 	putStrLn "Outputting graphvis formatted include graph to incude_graph.dot..."
 	writeFile "include_graph.dot" $ toGraphDot graph

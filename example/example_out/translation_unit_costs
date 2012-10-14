@@ -1,0 +1,4 @@
+Cost: 6, from: "src/d.cpp"
+Cost: 6, from: "src/b.cpp"
+Cost: 6, from: "src/a.cpp"
+Cost: 4, from: "src/c.cpp"
